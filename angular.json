@@ -1,0 +1,146 @@
+{
+  "version": 1,
+  "projects": {
+    "greenhouse": {
+      "projectType": "application",
+      "schematics": {
+        "@schematics/angular:component": {
+          "style": "scss"
+        }
+      },
+      "root": "apps/greenhouse",
+      "sourceRoot": "apps/greenhouse/src",
+      "prefix": "greenhouse",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:browser",
+          "options": {
+            "outputPath": "dist/apps/greenhouse",
+            "index": "apps/greenhouse/src/index.html",
+            "main": "apps/greenhouse/src/main.ts",
+            "polyfills": "apps/greenhouse/src/polyfills.ts",
+            "tsConfig": "apps/greenhouse/tsconfig.app.json",
+            "aot": true,
+            "assets": [
+              "apps/greenhouse/src/favicon.ico",
+              "apps/greenhouse/src/assets"
+            ],
+            "styles": ["apps/greenhouse/src/styles.scss"],
+            "scripts": []
+          },
+          "configurations": {
+            "production": {
+              "fileReplacements": [
+                {
+                  "replace": "apps/greenhouse/src/environments/environment.ts",
+                  "with": "apps/greenhouse/src/environments/environment.prod.ts"
+                }
+              ],
+              "optimization": true,
+              "outputHashing": "all",
+              "sourceMap": false,
+              "extractCss": true,
+              "namedChunks": false,
+              "extractLicenses": true,
+              "vendorChunk": false,
+              "buildOptimizer": true,
+              "budgets": [
+                {
+                  "type": "initial",
+                  "maximumWarning": "2mb",
+                  "maximumError": "5mb"
+                },
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "6kb",
+                  "maximumError": "10kb"
+                }
+              ]
+            }
+          }
+        },
+        "serve": {
+          "builder": "@angular-devkit/build-angular:dev-server",
+          "options": {
+            "browserTarget": "greenhouse:build"
+          },
+          "configurations": {
+            "production": {
+              "browserTarget": "greenhouse:build:production"
+            }
+          }
+        },
+        "extract-i18n": {
+          "builder": "@angular-devkit/build-angular:extract-i18n",
+          "options": {
+            "browserTarget": "greenhouse:build"
+          }
+        },
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": ["apps/greenhouse/src/**/*.ts"]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "options": {
+            "jestConfig": "apps/greenhouse/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      }
+    },
+    "greenhouse-e2e": {
+      "root": "apps/greenhouse-e2e",
+      "sourceRoot": "apps/greenhouse-e2e/src",
+      "projectType": "application",
+      "architect": {
+        "e2e": {
+          "builder": "@nrwl/cypress:cypress",
+          "options": {
+            "cypressConfig": "apps/greenhouse-e2e/cypress.json",
+            "tsConfig": "apps/greenhouse-e2e/tsconfig.e2e.json",
+            "devServerTarget": "greenhouse:serve"
+          },
+          "configurations": {
+            "production": {
+              "devServerTarget": "greenhouse:serve:production"
+            }
+          }
+        },
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": ["apps/greenhouse-e2e/**/*.{js,ts}"]
+          }
+        }
+      }
+    }
+  },
+  "cli": {
+    "defaultCollection": "@nrwl/angular",
+    "analytics": "1f7c94c6-cee5-4ab9-8e4c-36dd73d7db58"
+  },
+  "schematics": {
+    "@nrwl/angular": {
+      "application": {
+        "linter": "eslint"
+      },
+      "library": {
+        "linter": "eslint"
+      },
+      "storybook-configuration": {
+        "linter": "eslint"
+      }
+    },
+    "@nrwl/angular:application": {
+      "unitTestRunner": "jest",
+      "e2eTestRunner": "cypress"
+    },
+    "@nrwl/angular:library": {
+      "unitTestRunner": "jest"
+    }
+  },
+  "defaultProject": "greenhouse"
+}
